@@ -110,4 +110,10 @@ export const comum = {
     legenda: "Robot melambaikan tangan",
     legendaFalhou: "Anak kucing menangis",
   },
+  ads: {
+    label: "Iklan",
+    title: "Pasang iklan di sini",
+    detail: "Hubungi kami dan tampil di hadapan pengguna Ravox Chat.",
+    action: "Saya ingin beriklan",
+  },
 };

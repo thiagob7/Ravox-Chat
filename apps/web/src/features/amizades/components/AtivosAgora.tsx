@@ -4,6 +4,7 @@ import { ChevronRight, PhoneCall, Volume2 } from "lucide-react";
 
 import { useActive } from "~/@core/application/queries/friend/use-ativos";
 import { LottieArt } from "~/components/LottieArt";
+import { AdSlot } from "~/features/ads/components/AdSlot";
 import { Avatar } from "~/features/perfil/components/Avatar";
 import { Button } from "~/components/ui/button";
 import { Tooltip } from "~/components/ui/tooltip";
@@ -32,7 +33,7 @@ export const ActiveNow: React.FC = () => {
   }
 
   return (
-    <aside data-gc="amizades.ativos-agora.aside" {...flx("activeNow", "topo-do-miolo hidden w-72 shrink-0 border-l border-divisor bg-surface-2 p-4 xl:block")}>
+    <aside data-gc="amizades.ativos-agora.aside" {...flx("activeNow", "topo-do-miolo hidden w-72 shrink-0 border-l border-divisor bg-surface-2 p-4 xl:flex xl:flex-col")}>
       <h2 data-gc="amizades.ativos-agora.h2" {...flx("activeTitle", "mb-3 text-sm font-semibold")}>{t("amizades.ativosAgora")}</h2>
 
       {isLoading ? (
@@ -57,9 +58,9 @@ export const ActiveNow: React.FC = () => {
           </p>
         </div>
       ) : (
-        <div data-gc="amizades.ativos-agora.div--2" {...flx("activeContent", "space-y-3")}>
+        <div data-gc="amizades.ativos-agora.div--2" {...flx("activeContent", "min-h-0 flex-1 space-y-3 overflow-y-auto")}>
           {[...rooms.values()].map(({ channel, server, folks }) => (
-            <div data-gc="amizades.ativos-agora.div--3" key={channel.id} className={cn("rounded-lg bg-surface-1 p-3", flxCls("voiceActiveCard"))}>
+            <div data-gc="amizades.ativos-agora.div--3" key={channel.id} className={cn("rounded-lg bg-surface-3 p-3", flxCls("voiceActiveCard"))}>
               <p data-gc="amizades.ativos-agora.p--4" className="flex items-center gap-1.5 text-11 font-semibold uppercase tracking-wide text-online">
                 <Volume2 data-gc="amizades.ativos-agora.volume2" size={12} className="shrink-0" /> {t("amizades.emVoz")}
               </p>
@@ -136,6 +137,8 @@ export const ActiveNow: React.FC = () => {
           ))}
         </div>
       )}
+
+      <AdSlot data-gc="amizades.ativos-agora.ad-slot" className="mt-auto shrink-0 pt-4" />
     </aside>
   );
 };

@@ -110,4 +110,10 @@ export const comum = {
     legenda: "Mojuojantis robotas",
     legendaFalhou: "Verkiantis kačiukas",
   },
+  ads: {
+    label: "Reklama",
+    title: "Reklamuokitės čia",
+    detail: "Susisiekite su mumis ir pasirodykite tiems, kurie naudoja Ravox Chat.",
+    action: "Noriu reklamuotis",
+  },
 };

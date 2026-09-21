@@ -110,4 +110,10 @@ export const comum = {
     legenda: "El sallayan bir robot",
     legendaFalhou: "Ağlayan bir yavru kedi",
   },
+  ads: {
+    label: "Reklam",
+    title: "Burada reklam verin",
+    detail: "Bizimle konuşun ve Ravox Chat kullananlara görünün.",
+    action: "Reklam vermek istiyorum",
+  },
 };

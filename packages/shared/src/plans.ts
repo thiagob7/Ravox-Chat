@@ -27,6 +27,7 @@ export interface PlanLimits {
   expressionsAnywhere: boolean;
   customColors: boolean;
   earlyAccess: boolean;
+  adFree: boolean;
 }
 
 export const PLAN_LIMITS: Record<Plan, PlanLimits> = {
@@ -45,6 +46,7 @@ export const PLAN_LIMITS: Record<Plan, PlanLimits> = {
     expressionsAnywhere: false,
     customColors: false,
     earlyAccess: false,
+    adFree: false,
   },
   premium: {
     messageLength: 4000,
@@ -61,6 +63,7 @@ export const PLAN_LIMITS: Record<Plan, PlanLimits> = {
     expressionsAnywhere: true,
     customColors: true,
     earlyAccess: true,
+    adFree: true,
   },
 };
 
