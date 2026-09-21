@@ -546,9 +546,9 @@ export const VoiceSection: React.FC<{ part?: "audio" | "video" }> = ({
               </label>
             </div>
             {planLimits.screenResolutions.length < SCREEN_RESOLUTIONS.length && (
-              <button data-gc="configuracoes.voice-section.button.open-upgrade"
+              <button data-gc="configuracoes.voice-section.button--6"
                 type="button"
-                onClick={openUpgrade}
+                onClick={() => openUpgrade()}
                 className="mt-2 flex items-center gap-1.5 text-xs font-medium text-brand hover:underline"
               >
                 <InfinityIcon data-gc="configuracoes.voice-section.infinity-icon" size={13} /> {t("configuracoes.subscription.screenUpsell")}

@@ -15,6 +15,14 @@
     ],
     "accent": "#5c5ff0"
   },
+  "grafite": {
+    "sample": [
+      "#121214",
+      "#121214",
+      "#1a1a1e"
+    ],
+    "accent": "#5c5ff0"
+  },
   "gravae": {
     "sample": [
       "#080a0c",

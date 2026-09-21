@@ -323,12 +323,13 @@ const ProfileCard: React.FC<{
     Spam, conforme o filtro que ela escolheu.
 
     Aqui só não se oferece o que com certeza não vai: para quem bloqueou, para
-    você mesmo, e para quem não divide comunidade nenhuma. O resto tenta, e a
-    recusa do servidor chega escrita.
+    você mesmo, para quem não divide comunidade nenhuma — e para a conta da
+    casa, cuja conversa é de mão única. Escrever para ela nunca entrega: a
+    mensagem volta com a recusa de conversa.recusada, e oferecer a caixa era
+    convidar para um erro. O resto tenta, e a recusa do servidor chega escrita.
   */
   const canChat =
     profile.friendship === "ACCEPTED" ||
-    isSystem ||
     isBot ||
     (profile.friendship !== "SELF" &&
       profile.friendship !== "BLOCKED" &&

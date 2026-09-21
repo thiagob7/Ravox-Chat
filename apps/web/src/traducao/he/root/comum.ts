@@ -110,4 +110,10 @@ export const comum = {
     legenda: "רובוט מנופף",
     legendaFalhou: "חתלתול בוכה",
   },
+  ads: {
+    label: "פרסומת",
+    title: "פרסמו כאן",
+    detail: "דברו איתנו והופיעו מול מי שמשתמש ב-Ravox Chat.",
+    action: "אני רוצה לפרסם",
+  },
 };

@@ -110,4 +110,10 @@ export const comum = {
     legenda: "Vilkuttava robotti",
     legendaFalhou: "Itkevä kissanpentu",
   },
+  ads: {
+    label: "Mainos",
+    title: "Mainosta tässä",
+    detail: "Ota yhteyttä ja näy niille, jotka käyttävät Ravox Chatia.",
+    action: "Haluan mainostaa",
+  },
 };

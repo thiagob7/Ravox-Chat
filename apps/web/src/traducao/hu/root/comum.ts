@@ -110,4 +110,10 @@ export const comum = {
     legenda: "Integető robot",
     legendaFalhou: "Síró kiscica",
   },
+  ads: {
+    label: "Hirdetés",
+    title: "Hirdess itt",
+    detail: "Írj nekünk, és jelenj meg azok előtt, akik a Ravox Chatet használják.",
+    action: "Hirdetni szeretnék",
+  },
 };

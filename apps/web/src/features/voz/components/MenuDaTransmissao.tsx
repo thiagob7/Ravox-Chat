@@ -101,7 +101,7 @@ export const ScreenShareMenuItems: React.FC<{ withSettings?: boolean }> = ({ wit
           {limits.screenResolutions.length < SCREEN_RESOLUTIONS.length && (
             <>
               <DropdownMenuSeparator data-gc="voz.menu-da-transmissao.dropdown-menu-separator--2" />
-              <DropdownMenuItem data-gc="voz.menu-da-transmissao.dropdown-menu-item.open-upgrade" onSelect={openUpgrade}>
+              <DropdownMenuItem data-gc="voz.menu-da-transmissao.dropdown-menu-item--4" onSelect={() => openUpgrade()}>
                 {t("configuracoes.subscription.screenUpsell")} <InfinityIcon data-gc="voz.menu-da-transmissao.infinity-icon" size={15} />
               </DropdownMenuItem>
             </>
@@ -120,7 +120,7 @@ export const ScreenShareMenuItems: React.FC<{ withSettings?: boolean }> = ({ wit
       {withSettings && (
         <>
           <DropdownMenuSeparator data-gc="voz.menu-da-transmissao.dropdown-menu-separator--3" />
-          <DropdownMenuItem data-gc="voz.menu-da-transmissao.dropdown-menu-item--4" onSelect={() => openSettings("voice")}>
+          <DropdownMenuItem data-gc="voz.menu-da-transmissao.dropdown-menu-item--5" onSelect={() => openSettings("voice")}>
             {t("chamada.tela.configCompartilhamento")} <Settings data-gc="voz.menu-da-transmissao.settings" size={15} />
           </DropdownMenuItem>
         </>

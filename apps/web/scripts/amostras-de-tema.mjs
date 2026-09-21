@@ -15,10 +15,11 @@ const LIST = join(
 );
 
 const WHERE = {
-  dark: "@theme {",
+  escuro: "@theme {",
   "mais-escuro": ':root[data-tema="mais-escuro"] {',
+  grafite: ':root[data-tema="grafite"] {',
   gravae: ':root[data-tema="gravae"] {',
-  light: ':root[data-tema="claro"],',
+  claro: ':root[data-tema="claro"],',
 };
 
 function block(css, opening) {
@@ -75,21 +76,21 @@ export function extractSamples(css) {
 
   for (const [theme, opening] of Object.entries(WHERE)) {
     const body = block(css, opening);
-    const color = (name) => {
+    const pick = (name) => {
       const match = color(body, name, chain);
       if (!match) throw new Error(`não achei ${name} em \`${opening}\``);
       return match;
     };
 
     byTheme[theme] = {
-      sample: [color("--color-surface-0"), color("--color-surface-1"), color("--color-surface-2")],
-      accent: color("--color-brand"),
+      sample: [pick("--color-surface-0"), pick("--color-surface-1"), pick("--color-surface-2")],
+      accent: pick("--color-brand"),
     };
   }
 
-  byTheme.system = {
-    sample: [byTheme.light.sample[2], byTheme.dark.sample[2]],
-    accent: byTheme.dark.accent,
+  byTheme.sistema = {
+    sample: [byTheme.claro.sample[2], byTheme.escuro.sample[2]],
+    accent: byTheme.escuro.accent,
   };
 
   return byTheme;

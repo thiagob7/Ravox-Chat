@@ -9,9 +9,11 @@ import { useActive } from "~/@core/application/queries/friend/use-ativos";
 import { useDmRequests } from "~/@core/application/queries/friend/use-pedidos-de-dm";
 import { useVoiceStore } from "~/features/voz/stores/voice-store";
 import { chatStatus } from "~/features/amizades/lib/status-da-conversa";
+import { useDmList } from "~/features/amizades/stores/dm-list";
 import type { SelfUserModel } from "~/@core/domain/models/user-model";
 import { Avatar } from "~/features/perfil/components/Avatar";
 import { UserName } from "~/features/perfil/components/UserName";
+import { DmContextMenu } from "~/features/amizades/components/DmContextMenu";
 import { NewChatModal } from "~/features/amizades/components/NovaConversaModal";
 import { IconButton } from "~/components/ui/button";
 import { SearchField } from "~/components/ui/input";
@@ -62,16 +64,33 @@ export const DmSidebar: React.FC<DmSidebarProps> = ({
 
   const [search, setSearch] = useState("");
 
+  const pinned = useDmList((s) => s.pinned);
+  const muted = useDmList((s) => s.muted);
+
+  /*
+    Fixada sobe, e entre as fixadas vale a ordem em que foram fixadas. O resto
+    da lista fica como o servidor mandou, que é por conversa mais recente.
+  */
   const visible = useMemo(() => {
     const term = search.trim().toLowerCase();
-    if (!term) return dms;
 
-    return dms.filter(
-      (dm) =>
-        dm.user.displayName.toLowerCase().includes(term) ||
-        dm.user.username.toLowerCase().includes(term),
-    );
-  }, [dms, search]);
+    const found = term
+      ? dms.filter(
+          (dm) =>
+            dm.user.displayName.toLowerCase().includes(term) ||
+            dm.user.username.toLowerCase().includes(term),
+        )
+      : dms;
+
+    if (!pinned.length) return found;
+
+    const place = (id: string) => {
+      const index = pinned.indexOf(id);
+      return index === -1 ? pinned.length : index;
+    };
+
+    return [...found].sort((a, b) => place(a.id) - place(b.id));
+  }, [dms, search, pinned]);
 
   const requestsReceived = relations.filter((r) => r.status === "PENDING_IN").length;
   const pendingRequests = requestsBox?.requests.length ?? 0;
@@ -158,11 +177,19 @@ export const DmSidebar: React.FC<DmSidebarProps> = ({
 
         {visible.map((dm) => {
           const active = dm.id === activeChannelId;
-          const notRead = !active && dm.lastMessageId && dm.lastMessageId !== readStates[dm.id]?.read;
+          const quiet = muted.includes(dm.id);
+          const notRead = !active && !quiet && dm.lastMessageId && dm.lastMessageId !== readStates[dm.id]?.read;
+          const friendship = relations.find((r) => r.status === "ACCEPTED" && r.user.id === dm.user.id);
 
           return (
-            <button data-gc="amizades.dm-sidebar.button"
+            <DmContextMenu data-gc="amizades.dm-sidebar.dm-context-menu"
               key={dm.id}
+              channelId={dm.id}
+              userId={dm.user.id}
+              name={dm.user.displayName}
+              friendshipId={friendship?.id ?? null}
+            >
+            <button data-gc="amizades.dm-sidebar.button"
               onClick={() => onSelectDm(dm.id)}
               className={cn(
                 "mb-0.5 flex w-full items-center gap-2.5 rounded-lg border border-transparent px-2 py-1.5 text-sm transition",
@@ -172,6 +199,7 @@ export const DmSidebar: React.FC<DmSidebarProps> = ({
                   : notRead
                     ? "font-semibold text-ink hover:bg-surface-3"
                     : "text-ink-muted hover:bg-surface-3",
+                quiet && !active && "opacity-50",
               )}
             >
               <Avatar data-gc="amizades.dm-sidebar.avatar"
@@ -210,6 +238,7 @@ export const DmSidebar: React.FC<DmSidebarProps> = ({
 
               {notRead && <span data-gc="amizades.dm-sidebar.span--4" className="ml-auto size-2 shrink-0 rounded-full bg-ink" />}
             </button>
+            </DmContextMenu>
           );
         })}
       </div>

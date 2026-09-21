@@ -22,6 +22,7 @@ export const LIMITS = {
   avatarBytes: 2 * 1024 * 1024,
   bannerBytes: 10 * 1024 * 1024,
   roleIconBytes: 256 * 1024,
+  adBytes: 1024 * 1024,
   tag: 6,
   badgesByServer: 20,
   badgesByMember: 5,
@@ -54,7 +55,7 @@ export const LIMITS = {
 
 export const NOTE_LIMIT = 120;
 
-export const UPLOAD_PURPOSES = ["anexo", "avatar", "banner", "iconeDeCargo"] as const;
+export const UPLOAD_PURPOSES = ["anexo", "avatar", "banner", "iconeDeCargo", "ad"] as const;
 export type UploadPurpose = (typeof UPLOAD_PURPOSES)[number];
 
 export const CEILING_BY_PURPOSE: Record<UploadPurpose, number> = {
@@ -62,6 +63,7 @@ export const CEILING_BY_PURPOSE: Record<UploadPurpose, number> = {
   avatar: LIMITS.avatarBytes,
   banner: LIMITS.bannerBytes,
   iconeDeCargo: LIMITS.roleIconBytes,
+  ad: LIMITS.adBytes,
 };
 
 export const MODE_SLOW_OPTIONS = [0, 5, 10, 15, 30, 60, 120, 300, 600, 900, 1800, 3600, 7200, 21_600] as const;

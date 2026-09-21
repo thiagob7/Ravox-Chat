@@ -110,4 +110,10 @@ export const comum = {
     legenda: "Robot koji maše",
     legendaFalhou: "Mače koje plače",
   },
+  ads: {
+    label: "Oglas",
+    title: "Oglašavajte ovdje",
+    detail: "Javite nam se i pokažite se onima koji koriste Ravox Chat.",
+    action: "Želim oglašavati",
+  },
 };

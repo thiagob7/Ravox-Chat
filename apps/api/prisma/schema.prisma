@@ -971,3 +971,22 @@ model PixCharge {
   @@index([mpPaymentId])
   @@index([mpOrderId])
 }
+
+/// Quadro vendido na coluna "Ativo agora". Só quem está no plano grátis vê.
+/// Sem índice de propósito: a coleção é pequena e o deploy não roda `db push`.
+model Ad {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  advertiser  String
+  title       String
+  body        String?
+  imageUrl    String?
+  linkUrl     String
+  active      Boolean   @default(true)
+  startsAt    DateTime?
+  endsAt      DateTime?
+  impressions Int       @default(0)
+  clicks      Int       @default(0)
+  createdById String?   @db.ObjectId
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}

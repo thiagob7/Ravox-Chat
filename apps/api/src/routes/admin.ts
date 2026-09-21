@@ -1,12 +1,13 @@
 import type { FastifyInstance, FastifyRequest } from "fastify";
 import { z } from "zod";
 
-import { ADMIN_AREAS, ADMIN_TOKEN_HEADER, PREMIUM_GRANT_MAX_DAYS, type AdminArea, type PremiumAccount } from "@gravae/shared";
+import { AD_LIMITS, ADMIN_AREAS, ADMIN_TOKEN_HEADER, PREMIUM_GRANT_MAX_DAYS, type AdminArea, type PremiumAccount } from "@gravae/shared";
 
 import { NotFoundError } from "~/lib/http.js";
 import { announceUserUpdated } from "~/realtime/difusao.js";
 import { objectId } from "~/validations/common.js";
 import { userRepository } from "~/repositories/user-repository.js";
+import { adService } from "~/services/ad-service.js";
 import { adminService } from "~/services/admin-service.js";
 import { reportService } from "~/services/denuncia-service.js";
 import { githubService } from "~/services/github-service.js";
@@ -40,6 +41,19 @@ const toPremiumAccount = (u: UserRow): PremiumAccount => ({
   avatarUrl: u.avatarUrl,
   premiumUntil: u.premiumUntil ? u.premiumUntil.toISOString() : null,
   premiumSource: (u.premiumSource as PremiumAccount["premiumSource"]) ?? null,
+});
+
+const moment = z.iso.datetime().nullable().optional();
+
+const ad = z.object({
+  advertiser: z.string().trim().min(1).max(AD_LIMITS.advertiser),
+  title: z.string().trim().min(1).max(AD_LIMITS.title),
+  body: z.string().trim().max(AD_LIMITS.body).nullable().optional(),
+  imageUrl: z.url().max(AD_LIMITS.url).nullable().optional(),
+  linkUrl: z.url().max(AD_LIMITS.url),
+  active: z.boolean().optional(),
+  startsAt: moment,
+  endsAt: moment,
 });
 
 const areas = z.array(z.enum(ADMIN_AREAS)).max(ADMIN_AREAS.length);
@@ -195,6 +209,42 @@ export async function adminRoutes(app: FastifyInstance) {
       return result;
     },
   );
+
+  app.get("/admin/ads", async (req) => {
+    await requireAdmin(req, "ads");
+    return adService.list();
+  });
+
+  app.post("/admin/ads", async (req, reply) => {
+    const actor = await requireAdmin(req, "ads");
+    const body = ad.parse(req.body);
+
+    const created = await adService.create(actor.userId, body);
+    await adminService.log(actor.userId, "created-ad", { adId: created.id, advertiser: created.advertiser });
+
+    return reply.code(201).send(created);
+  });
+
+  app.patch("/admin/ads/:adId", async (req) => {
+    const actor = await requireAdmin(req, "ads");
+    const { adId } = z.object({ adId: objectId }).parse(req.params);
+    const body = ad.partial().parse(req.body);
+
+    const edited = await adService.edit(adId, body);
+    await adminService.log(actor.userId, "edited-ad", { adId });
+
+    return edited;
+  });
+
+  app.delete("/admin/ads/:adId", async (req, reply) => {
+    const actor = await requireAdmin(req, "ads");
+    const { adId } = z.object({ adId: objectId }).parse(req.params);
+
+    await adService.remove(adId);
+    await adminService.log(actor.userId, "removed-ad", { adId });
+
+    return reply.code(204).send();
+  });
 
   app.get("/admin/premium", async (req) => {
     await requireAdmin(req, "premium");

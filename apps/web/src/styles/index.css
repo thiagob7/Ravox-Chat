@@ -171,6 +171,71 @@
   }
 
 
+  /*
+    Grafite: o mesmo desenho, em cinza neutro e mais fundo.
+
+    Nasceu de uma medição, não de gosto. Nos prints lado a lado, o casco da
+    referência mede `#121214` e a conversa `#1a1a1e`; o nosso escuro mede
+    `#1a181d` e `#1e1d22` — metade mais claro, e com o verde abaixo do vermelho,
+    o que puxa o cinza para o malva. Aqui o casco desce para o mesmo poço e o
+    cinza fica neutro (vermelho e verde iguais, uma pitada de azul), enquanto o
+    indigo da marca e as cores de estado continuam nossos.
+  */
+  :root[data-tema="grafite"] {
+
+    --brand-primary-fill: #ffffff;
+    --color-veu: rgb(0 0 0 / 0.7);
+    --color-line-sutil: rgb(255 255 255 / 0.06);
+    --control-button-danger-hover-bg: rgb(229 55 52 / 0.14);
+    --focus-primary: rgb(92 95 240 / 0.6);
+    --color-palco: #0d0d0f;
+    --color-sobre-midia: rgb(0 0 0 / 0.64);
+    --color-sombra: rgb(0 0 0 / 0.38);
+    --color-brilho: rgb(255 255 255 / 0.3);
+    --color-palco-ink: #f2f3f5;
+    /*
+      Aqui o fundo de tudo é o mesmo do casco. Na referência não existe um
+      terceiro tom mais fundo atrás do app: a moldura em volta da janela mede
+      `#121214`, igual ao trilho. Com o `#0d0d0f` que estava aqui, a moldura e
+      a sombra do rodapé desenhavam uma tarja preta em volta da tela.
+    */
+    --background-primary: #121214;
+    --background-secondary: #121214;
+    --background-secondary-lighter: #1a1a1e;
+    --background-secondary-alt: #202024;
+    --guild-list-foreground: #222327;
+    --form-surface-background: #2b2d31;
+    --scrollbar-thumb-bg-hover: #3f4147;
+    --scrollbar-thumb-bg: #2b2d31;
+    --border-color: rgb(255 255 255 / 0.08);
+    --background-textarea: #262628;
+    --background-modifier-accent-focus: #2f2f33;
+
+    --text-chat: #f2f3f5;
+    --text-chat-muted: #b7bac1;
+    --text-tertiary-muted: #80848e;
+
+    --accent-primary: #5c5ff0;
+    --brand-primary-light: #4a4dde;
+
+    --composer-surface-color: #1a1a1e;
+    --background-channel-header: #1a1a1e;
+    --background-modifier-selected: rgb(255 255 255 / 0.13);
+    --background-modifier-hover: rgb(255 255 255 / 0.06);
+
+    /*
+      A divisa é um fio CLARO por cima do fundo, não uma sombra.
+
+      Medido no print: nas bordas deles o pixel da divisa é `#262628` sobre o
+      casco e `#2c2c31` sobre a conversa — sempre acima do fundo. O nosso
+      herdava o preto a 45% do tema da casa e desenhava `#060607`, uma listra
+      preta em volta de cada painel. Branco a 8% pousa nos dois valores.
+    */
+    --user-area-divider-color: rgb(255 255 255 / 0.08);
+    --color-pilula: #f2f3f5;
+  }
+
+
   :root[data-tema="gravae"] {
 
     --brand-primary-fill: #ffffff;
@@ -1141,8 +1206,46 @@ textarea:not(:disabled),
   }
 }
 
+.sobe-ao-entrar {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+
+.sobe-ao-entrar.apareceu {
+  opacity: 1;
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .infinity-glow {
+  .sobe-ao-entrar {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+.infinity-bit {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(14px);
+  animation: infinity-bit-float 11s ease-in-out infinite alternate;
+}
+
+@keyframes infinity-bit-float {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(0, -18px, 0) scale(1.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .infinity-glow,
+  .infinity-bit {
     animation: none;
   }
 }
