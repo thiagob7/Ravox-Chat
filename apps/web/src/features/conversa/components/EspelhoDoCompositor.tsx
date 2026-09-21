@@ -1,6 +1,7 @@
 import React from "react";
 
 import { EMOJI, urlDoEmoji } from "~/features/expressao/lib/twemoji";
+import { LINK, clearLink } from "~/features/conversa/lib/links";
 import { cn } from "~/lib/utils";
 import { mentionPattern } from "~/features/conversa/lib/mention-labels";
 
@@ -37,17 +38,49 @@ export const ComposerMirror = React.forwardRef<HTMLDivElement, Props>(
     const parts: React.ReactNode[] = [];
     const pattern = mentionPattern(mentions);
 
+    /*
+      O link fica azul enquanto se escreve, igual ao da mensagem enviada.
+
+      A pontuação que vem colada no fim (ponto, vírgula, parêntese) fica fora do
+      azul, pela mesma regra do `clearLink` que decide o que é o endereço na
+      hora de mandar. Assim o que está pintado é exatamente o que vai virar
+      link — e o que não está, não vira.
+    */
+    const withLinks = (piece: string, key: number) => {
+      const out: React.ReactNode[] = [];
+      let from = 0;
+
+      for (const match of piece.matchAll(LINK)) {
+        const start = match.index!;
+        const url = clearLink(match[0]);
+
+        if (start > from) out.push(piece.slice(from, start));
+
+        out.push(
+          <span data-gc="conversa.espelho-do-compositor.span--2" key={`link-${key}-${start}`} style={{ color: "var(--color-link)" }}>
+            {url}
+          </span>,
+        );
+
+        out.push(match[0].slice(url.length));
+        from = start + match[0].length;
+      }
+
+      if (from < piece.length) out.push(piece.slice(from));
+      return out;
+    };
+
     const withMentions = (piece: string, key: number) => {
-      if (!pattern) return [piece];
+      if (!pattern) return withLinks(piece, key);
 
       const out: React.ReactNode[] = [];
       let from = 0;
 
       for (const match of piece.matchAll(pattern)) {
         const start = match.index!;
-        if (start > from) out.push(piece.slice(from, start));
+        if (start > from) out.push(...withLinks(piece.slice(from, start), from));
         out.push(
-          <span data-gc="conversa.espelho-do-compositor.span--2"
+          <span data-gc="conversa.espelho-do-compositor.span--3"
             key={`${key}-${start}`}
             className="rounded-sm"
             style={{
@@ -61,7 +94,7 @@ export const ComposerMirror = React.forwardRef<HTMLDivElement, Props>(
         from = start + match[0].length;
       }
 
-      if (from < piece.length) out.push(piece.slice(from));
+      if (from < piece.length) out.push(...withLinks(piece.slice(from), from));
       return out;
     };
 

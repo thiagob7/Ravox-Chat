@@ -14,6 +14,9 @@ import { messageForEdit } from "~/features/conversa/lib/editar-com-a-seta";
 import { useEditStore } from "~/features/conversa/stores/edicao-store";
 import { invokeCommand, startTyping } from "~/@core/lib/websocket/emit-message-actions";
 import { AttachmentTray } from "~/features/conversa/components/AttachmentTray";
+import { ComposerLinkPreview } from "~/features/conversa/components/ComposerLinkPreview";
+import { linkAt } from "~/features/conversa/lib/first-link";
+import { useDrafts } from "~/features/conversa/stores/drafts";
 import { CreatePollModal } from "~/features/conversa/components/CreatePollModal";
 import { ExpressionPicker, type Tab } from "~/features/expressao/components/ExpressionPicker";
 import { useShortcutGlobal } from "~/features/app/hooks/use-atalho-global";
@@ -97,6 +100,33 @@ export const Composer: React.FC<ComposerProps> = ({
 
   const [value, setValue] = useState("");
   const [mentionLabels, setMentionLabels] = useState<MentionLabel[]>([]);
+
+  /*
+    Um rascunho por conversa.
+
+    A caixa é o mesmo componente em todas elas, só trocando a propriedade do
+    canal, então o texto ficava na tela ao pular de conversa. A troca é lida no
+    meio da renderização de propósito: se fosse num efeito, o efeito que salva
+    rodaria antes, com o texto da conversa anterior, e gravaria o rascunho de um
+    no outro.
+  */
+  const draftKey = postId ?? channelId;
+  const saveDraft = useDrafts((s) => s.save);
+  const [draftOf, setDraftOf] = useState(draftKey);
+
+  if (draftOf !== draftKey) {
+    const saved = useDrafts.getState().byKey[draftKey];
+
+    setDraftOf(draftKey);
+    setValue(saved?.text ?? "");
+    setMentionLabels(saved?.mentions ?? []);
+  }
+
+  useEffect(() => {
+    if (draftOf !== draftKey) return;
+
+    saveDraft(draftKey, { text: value, mentions: mentionLabels });
+  }, [draftKey, draftOf, value, mentionLabels, saveDraft]);
   const [textLong, setTextLong] = useState<string | null>(null);
 
   const queryClient = useQueryClient();
@@ -518,6 +548,8 @@ export const Composer: React.FC<ComposerProps> = ({
           </div>
         )}
 
+        <ComposerLinkPreview data-gc="conversa.composer.composer-link-preview" text={value} />
+
         <AttachmentTray data-gc="conversa.composer.attachment-tray.remove"
           items={attachments.items}
           onRemove={attachments.remove}
@@ -637,7 +669,25 @@ export const Composer: React.FC<ComposerProps> = ({
               notifyTyping();
               adjustHeight();
             }}
-            onClick={(e) => detect(value, e.currentTarget.selectionStart ?? 0)}
+            onClick={(e) => {
+              const caret = e.currentTarget.selectionStart ?? 0;
+
+              /*
+                ⌘/Ctrl + clique abre o link que está debaixo do cursor. Clique
+                simples continua só pondo o cursor ali, senão não dava para
+                corrigir um endereço digitado errado.
+              */
+              if (e.metaKey || e.ctrlKey) {
+                const url = linkAt(value, caret);
+
+                if (url) {
+                  window.open(url, "_blank", "noopener,noreferrer");
+                  return;
+                }
+              }
+
+              detect(value, caret);
+            }}
             onBlur={() => {
               setMention(null);
               setCommand(null);
