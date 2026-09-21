@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 import type { ReadingMode } from "~/lib/voz";
 
-export type Theme = "escuro" | "mais-escuro" | "claro" | "sistema" | "gravae";
+export type Theme = "escuro" | "mais-escuro" | "grafite" | "claro" | "sistema" | "gravae";
 export type Density = "confortavel" | "compacta";
 export type WhenShowSpoiler = "ao-clicar" | "sempre";
 

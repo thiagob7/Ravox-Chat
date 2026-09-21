@@ -1,6 +1,7 @@
 import React from "react";
 import {
   Check,
+  Contrast,
   Flame,
   Monitor,
   Moon,
@@ -62,6 +63,11 @@ const THEMES: ListTheme[] = [
     id: "mais-escuro",
     name: "Mais escuro",
     icon: <Moon data-gc="configuracoes.appearance-section.moon--2" size={14} />,
+  },
+  {
+    id: "grafite",
+    name: "Grafite",
+    icon: <Contrast data-gc="configuracoes.appearance-section.contrast" size={14} />,
   },
   {
     id: "sistema",

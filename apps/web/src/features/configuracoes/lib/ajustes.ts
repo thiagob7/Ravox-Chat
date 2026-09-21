@@ -74,6 +74,7 @@ const fromNotice = (field: "notice" | "soMentions" | "sound" | "counter") => ({
 const THEMES: Record<string, string> = {
   dark: "Escuro",
   "mais-escuro": "Mais escuro",
+  grafite: "Grafite",
   light: "Claro",
   system: "Do sistema",
   gravae: "Ravox Chat",
