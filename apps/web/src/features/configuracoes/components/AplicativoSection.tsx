@@ -7,8 +7,8 @@ import { ConfigSection as Section } from "~/features/configuracoes/components/Se
 
 const BASE = "https://github.com/thiagob7/Ravox-Chat/releases/latest/download";
 
-const MAC = `${BASE}/gravae-chat-mac.dmg`;
-const WINDOWS = `${BASE}/gravae-chat-win.exe`;
+const MAC = `${BASE}/ravox-chat-mac.dmg`;
+const WINDOWS = `${BASE}/ravox-chat-win.exe`;
 
 function isWindows(): boolean {
   if (typeof navigator === "undefined") return false;

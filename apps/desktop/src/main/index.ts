@@ -6,12 +6,15 @@ import { registerNotices } from "./avisos.js";
 import { registerCache } from "./cache-ipc.js";
 import { screenRegisterCapture } from "./captura-de-tela.js";
 import { createWindow } from "./janela.js";
+import { adoptLegacyData } from "./legacy-data.js";
 import { registerLinks } from "./links.js";
 import { registerLoginDesktop } from "./login-desktop.js";
 import { mediaRegisterPermissions } from "./permissoes.js";
 import { registerPushToTalk } from "./push-to-talk.js";
 import { registerSystem } from "./sistema.js";
 import { registerVersions } from "./versoes-ipc.js";
+
+adoptLegacyData();
 
 if (!app.requestSingleInstanceLock()) {
   app.quit();

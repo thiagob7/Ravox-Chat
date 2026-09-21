@@ -76,6 +76,31 @@ jobs:
           GRAVAE_APP_URL: ${{ vars.GRAVAE_APP_URL || 'https://app-ravox-chat.vercel.app' }}
         run: yarn workspace @gravae/desktop empacotar
 
+      # Ponte para quem ainda está na v0.2.5 ou antes. O atualizador dessas
+      # versões só procura `gravae-chat-mac.dmg` / `gravae-chat-win.exe` na
+      # release, e no Mac ainda quer achar um `Gravae Chat.app` dentro do .dmg.
+      # Sem estas cópias, elas nunca veem a versão nova. O conteúdo é o mesmo
+      # app; no Mac só a pasta do pacote muda de nome, e a próxima atualização
+      # (já pelo atualizador novo) renomeia para `Ravox Chat.app`.
+      - name: Ponte para o atualizador antigo (macOS)
+        if: runner.os == 'macOS'
+        working-directory: apps/desktop/release
+        run: |
+          APP=$(find . -maxdepth 2 -name "Ravox Chat.app" -type d | head -n 1)
+          test -n "$APP"
+
+          mkdir ponte
+          ditto "$APP" "ponte/Gravae Chat.app"
+          ln -s /Applications ponte/Applications
+          hdiutil create -volname "Ravox Chat" -srcfolder ponte -ov -format UDZO gravae-chat-mac.dmg
+          rm -rf ponte
+
+      - name: Ponte para o atualizador antigo (Windows)
+        if: runner.os == 'Windows'
+        working-directory: apps/desktop/release
+        shell: bash
+        run: cp ravox-chat-win.exe gravae-chat-win.exe
+
       - name: Anexar à release
         env:
           GH_TOKEN: ${{ github.token }}

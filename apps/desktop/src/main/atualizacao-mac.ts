@@ -3,6 +3,8 @@ import { access, readFile, writeFile } from "node:fs/promises";
 import { constants } from "node:fs";
 import path from "node:path";
 
+const BUNDLE = "Ravox Chat.app";
+
 export async function prepareMac(dmg: string, versionExpected: string): Promise<string> {
   const mounted = await command("hdiutil", ["attach", "-nobrowse", "-readonly", dmg]);
   const dot = mounted
@@ -14,7 +16,7 @@ export async function prepareMac(dmg: string, versionExpected: string): Promise<
   if (!dot) throw new Error("Não consegui montar o arquivo baixado.");
 
   try {
-    const origin = path.join(dot, "Gravae Chat.app");
+    const origin = path.join(dot, BUNDLE);
     await access(origin, constants.R_OK);
 
     const plist = await readFile(path.join(origin, "Contents", "Info.plist"), "utf8");
@@ -30,7 +32,7 @@ export async function prepareMac(dmg: string, versionExpected: string): Promise<
       throw new Error(`O app baixado diz ${version}, e a release diz ${versionExpected}.`);
     }
 
-    const kept = path.join(path.dirname(dmg), "Gravae Chat.app");
+    const kept = path.join(path.dirname(dmg), BUNDLE);
     await command("ditto", [origin, kept]);
     await command("xattr", ["-dr", "com.apple.quarantine", kept]).catch(() => "");
 
@@ -54,19 +56,26 @@ for _ in $(seq 1 60); do
   sleep 0.5
 done
 
-ANTIGO=${JSON.stringify(`${packet}.antigo`)}
-rm -rf "$ANTIGO"
-mv ${JSON.stringify(packet)} "$ANTIGO"
+PACOTE=${JSON.stringify(packet)}
+DESTINO=${JSON.stringify(path.join(path.dirname(packet), BUNDLE))}
+if [ "$DESTINO" != "$PACOTE" ] && [ -e "$DESTINO" ]; then
+  DESTINO="$PACOTE"
+fi
 
-if ditto ${JSON.stringify(fresh)} ${JSON.stringify(packet)}; then
+ANTIGO="$PACOTE.antigo"
+rm -rf "$ANTIGO"
+mv "$PACOTE" "$ANTIGO"
+
+if ditto ${JSON.stringify(fresh)} "$DESTINO"; then
   rm -rf "$ANTIGO"
 else
   # deu errado: devolve o que estava lá antes
-  rm -rf ${JSON.stringify(packet)}
-  mv "$ANTIGO" ${JSON.stringify(packet)}
+  rm -rf "$DESTINO"
+  mv "$ANTIGO" "$PACOTE"
+  DESTINO="$PACOTE"
 fi
 
-open ${JSON.stringify(packet)}
+open "$DESTINO"
 rm -rf ${JSON.stringify(path.dirname(fresh))}
 `,
     { mode: 0o755 },
