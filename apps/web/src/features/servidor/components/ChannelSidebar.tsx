@@ -226,8 +226,15 @@ export const ChannelSidebar: React.FC<ChannelSidebarProps> = ({
           className={cn(
             flxCls("serverHeader"),
             flxCls("headerServerFrame"),
-            "regiao-de-arrasto relative flex shrink-0 items-start overflow-hidden border-b border-line shadow-sm",
-            !withTrack && "h-[var(--layout-header-height)]",
+            "regiao-de-arrasto relative flex shrink-0 items-start overflow-hidden shadow-sm",
+            /*
+              A mesma divisa da lista de conversas (`border-divisor`). Aqui era
+              `border-line`, que é outro token e, em todo tema menos o Grafite,
+              é mais claro — a linha do topo mudava de cor quando você saía das
+              diretas e entrava num servidor. Com estandarte, quem separa é a
+              própria imagem, como na referência.
+            */
+            !withTrack && "h-[var(--layout-header-height)] border-b border-divisor",
           )}
           style={
             withTrack

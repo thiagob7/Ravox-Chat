@@ -8,7 +8,7 @@
 | `add-friend.json` | — | [LottieFiles](https://lottiefiles.com/animations/emptylist-friends-M8hYgCFJjX) | [Lottie Simple License](https://lottiefiles.com/page/license) |
 | `speech-bubbles.json` | — | [LottieFiles](https://lottiefiles.com/animations/comments-ujYUv7EpCN) | [Lottie Simple License](https://lottiefiles.com/page/license) |
 | `cat-crying.json` | Abdul Latif | [LottieFiles](https://lottiefiles.com/free-animation/cat-crying-emojisticker-animation-xvvswYf0RW) | [Lottie Simple License](https://lottiefiles.com/page/license) |
-| `not-found.json` | Abdul Latif | [LottieFiles](https://lottiefiles.com/free-animation/404-error-page-with-cat-ZltNpefmQj) | [Lottie Simple License](https://lottiefiles.com/page/license) |
+| `not-found.json` | Ahmet Tamtürk | [LottieFiles](https://lottiefiles.com/free-animation/404-error-eE8SmxEpYp) | [Lottie Simple License](https://lottiefiles.com/page/license) |
 | `loading.json` | vinay kurve | [LottieFiles](https://lottiefiles.com/free-animation/loading-sp5ya2LLZC) | [Lottie Simple License](https://lottiefiles.com/page/license) |
 | `loader-success.json` | Imran Khan | [LottieFiles](https://lottiefiles.com/free-animation/loader-and-success-ErL7PDpcXz) | [Lottie Simple License](https://lottiefiles.com/page/license) |
 | `thank-you.json` | Yusuf Adekunbi | [LottieFiles](https://lottiefiles.com/free-animation/thank-you-fS3GotkvX1) | [Lottie Simple License](https://lottiefiles.com/page/license) |
@@ -33,9 +33,24 @@ menor que um pixel. A contagem de objetos e de keyframes é a mesma do original.
 O peso vem de seis camadas de um segundo cada, com o gato inteiro remodelado
 quadro a quadro. Não há como deduplicar: as seis são desenhos diferentes.
 
-`not-found.json`, `thank-you.json` e `infinity-hero.json` passaram pelo mesmo
-enxugamento do `cat-crying.json`, e a contagem de objetos e de keyframes
-continua igual à do original: 164 → 124 KB, 132 → 69 KB e 905 → 587 KB.
+`thank-you.json` e `infinity-hero.json` passaram pelo mesmo enxugamento do
+`cat-crying.json`, e a contagem de objetos e de keyframes continua igual à do
+original: 132 → 69 KB e 905 → 587 KB.
+
+`not-found.json` é o 404 do astronauta, e trocou o gato de antes. São sete
+camadas de imagem (três estrelas, os dois "4", o planeta com o astronauta e a
+lua), não vetor. Como cada "4" é uma imagem só dele, os dois foram recoloridos
+pixel a pixel: o rosa `#ff66bb` virou o indigo `#5c5ff0` da marca girando o
+matiz e reescalando saturação e claridade na mesma proporção, o que preserva
+todo o sombreado do desenho. Pixel quase sem cor (saturação abaixo de 0,02)
+ficou como estava, para não tingir a sombra cinza.
+
+As sete imagens também desceram de 3230 para 1292 px de largura — a tela
+desenha em 576 px, então ainda sobra o dobro para retina — e as cinco que
+aguentam paleta de 256 cores foram gravadas assim. Com o enxugamento por cima,
+o arquivo foi de 967 para 302 KB, com a mesma contagem de objetos e de
+keyframes do original. Os campos `w`/`h` do `assets` continuam nos 3230×1959
+de origem, que é o que dá a escala ao desenho.
 
 O `loading.json` tinha a palavra "LOADING" desenhada embaixo da mão, em inglês.
 A camada saiu; quem diz o que está acontecendo é o nosso texto, traduzido.

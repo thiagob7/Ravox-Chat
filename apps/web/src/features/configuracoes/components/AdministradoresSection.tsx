@@ -35,6 +35,7 @@ export const AREA_INFO: Record<AdminArea, { name: string; detail: string }> = {
   comunidades: { name: "Comunidades", detail: "dar e tirar o selo de verificada" },
   administradores: { name: "Administradores", detail: "adicionar pessoas, mudar áreas e senhas" },
   premium: { name: "Premium", detail: "dar e tirar dias de premium de uma conta" },
+  ads: { name: "Anúncios", detail: "cadastrar e tirar os anúncios da coluna da direita" },
 };
 
 const ACTION_NAME: Record<string, string> = {
@@ -52,6 +53,9 @@ const ACTION_NAME: Record<string, string> = {
   "tirou-o-selo": "tirou o selo de uma comunidade",
   "granted-premium": "deu premium a uma conta",
   "revoked-premium": "tirou o premium de uma conta",
+  "created-ad": "cadastrou um anúncio",
+  "edited-ad": "mexeu num anúncio",
+  "removed-ad": "tirou um anúncio",
 };
 
 const when = new Intl.DateTimeFormat("pt-BR", { dateStyle: "short", timeStyle: "short" });

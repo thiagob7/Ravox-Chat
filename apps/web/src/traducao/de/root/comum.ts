@@ -110,4 +110,10 @@ export const comum = {
     legenda: "Ein winkender Roboter",
     legendaFalhou: "Ein weinendes Kätzchen",
   },
+  ads: {
+    label: "Werbung",
+    title: "Hier werben",
+    detail: "Sprich mit uns und zeig dich denen, die Ravox Chat nutzen.",
+    action: "Ich möchte werben",
+  },
 };

@@ -18,9 +18,9 @@ import {
   useBilling,
   useCreatePixCharge,
   useStartCardPayment,
-  useStartCheckout,
 } from "~/@core/application/queries/billing/use-billing";
 import { CardPayment } from "~/features/plan/components/CardPayment";
+import { comparisonRows, type Cell } from "~/features/plan/lib/comparison";
 import { PixPayment } from "~/features/plan/components/PixPayment";
 import { Button } from "~/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "~/components/ui/dialog";
@@ -64,13 +64,14 @@ export const UpgradeModal: React.FC = () => {
 const UpgradeBody: React.FC<{ onDone: () => void }> = ({ onDone }) => {
   const { t } = useTranslation();
   const billing = useBilling();
-  const checkout = useStartCheckout();
   const createPix = useCreatePixCharge();
   const startCard = useStartCardPayment();
   const openSettings = useSettings((s) => s.open);
 
+  const wanted = usePlanStore((s) => s.upgradeInterval);
+
   const [target, setTarget] = useState<PurchaseTarget>("me");
-  const [interval, setBillingInterval] = useState<BillingInterval>("year");
+  const [interval, setBillingInterval] = useState<BillingInterval>(wanted ?? "year");
   const [renewal, setRenewal] = useState<PayOption | null>(null);
   const [pixCharge, setPixCharge] = useState<PixChargeView | null>(null);
   const [cardIntent, setCardIntent] = useState<CardIntent | null>(null);
@@ -86,8 +87,21 @@ const UpgradeBody: React.FC<{ onDone: () => void }> = ({ onDone }) => {
       price.amount / 100,
     );
 
+  /*
+    O cartão é digitado AQUI DENTRO, nos campos da Stripe embutidos no modal.
+
+    Antes, quando a chave pública não chegava, a gente mandava a pessoa para a
+    página de pagamento da Stripe, fora do app. Isso sai da nossa tela, muda de
+    marca no meio da compra e é o oposto do que se quer. Agora, sem a chave, o
+    cartão simplesmente não é oferecido — e se não sobrar nenhuma forma de
+    pagamento, o modal diz que a assinatura não está disponível.
+
+    Sem a chave no `.env` da API (`STRIPE_PUBLISHABLE_KEY`), só o Pix aparece.
+  */
   const renewals = (["automatic", "pix"] as const).filter((option) =>
-    option === "pix" ? pixEnabled : Boolean(status?.enabled && prices?.automatic[interval]),
+    option === "pix"
+      ? pixEnabled
+      : Boolean(status?.enabled && status?.publishableKey && prices?.automatic[interval]),
   );
   const chosen = renewal && renewals.includes(renewal) ? renewal : renewals[0] ?? null;
 
@@ -95,9 +109,7 @@ const UpgradeBody: React.FC<{ onDone: () => void }> = ({ onDone }) => {
     const renewal = target === "gift" ? ("none" as const) : ("automatic" as const);
 
     if (chosen === "pix") createPix.mutate({ interval, target }, { onSuccess: setPixCharge });
-    else if (!chosen) return;
-    else if (status?.publishableKey) startCard.mutate({ interval, renewal, target }, { onSuccess: setCardIntent });
-    else checkout.mutate({ interval, renewal, target });
+    else if (chosen === "automatic") startCard.mutate({ interval, renewal, target }, { onSuccess: setCardIntent });
   };
 
   return (
@@ -238,7 +250,7 @@ const UpgradeBody: React.FC<{ onDone: () => void }> = ({ onDone }) => {
           <Button data-gc="plan.upgrade-modal.button.pay"
             className="mt-5 w-full"
             disabled={!chosen}
-            loading={checkout.isPending || createPix.isPending || startCard.isPending}
+            loading={createPix.isPending || startCard.isPending}
             onClick={pay}
           >
             {t(target === "gift" ? "configuracoes.subscription.buyGift" : "configuracoes.subscription.subscribe")}
@@ -253,40 +265,9 @@ const UpgradeBody: React.FC<{ onDone: () => void }> = ({ onDone }) => {
   );
 };
 
-type Cell = boolean | string;
-
 export const ComparisonTable: React.FC<{ className?: string }> = ({ className }) => {
   const { t } = useTranslation();
-  const number = (value: number) => value.toLocaleString(currentLanguage());
-
-  const screen = (limits: PlanLimits) => {
-    const resolution = limits.screenResolutions.at(-1) ?? "720";
-
-    return t("configuracoes.subscription.screenValue", {
-      resolution: resolution === "original" ? t("chamada.tela.original") : `${resolution}p`,
-      fps: limits.screenFrameRates.at(-1) ?? 15,
-    });
-  };
-
-  const rows: { name: string; value: (limits: PlanLimits) => Cell }[] = [
-    { name: t("configuracoes.subscription.tagRow"), value: (l) => l.customTag },
-    { name: t("configuracoes.subscription.guildProfilesRow"), value: (l) => l.guildProfiles },
-    { name: t("configuracoes.subscription.badgeRow"), value: (l) => l.profileBadge },
-    { name: t("configuracoes.subscription.communitiesRow"), value: (l) => number(l.communities) },
-    { name: t("configuracoes.subscription.messageRow"), value: (l) => number(l.messageLength) },
-    { name: t("configuracoes.subscription.savedRow"), value: (l) => number(l.savedMessages) },
-    {
-      name: t("configuracoes.subscription.attachmentRow"),
-      value: (l) => t("configuracoes.subscription.megabytesValue", { value: megabytes(l.attachmentBytes) }),
-    },
-    { name: t("configuracoes.subscription.animatedEmojiRow"), value: () => true },
-    { name: t("configuracoes.subscription.expressionsRow"), value: (l) => l.expressionsAnywhere },
-    { name: t("configuracoes.subscription.screenRow"), value: screen },
-    { name: t("configuracoes.subscription.animatedProfileRow"), value: (l) => l.animatedProfile },
-    { name: t("configuracoes.subscription.colorsRow"), value: (l) => l.customColors },
-    { name: t("configuracoes.subscription.earlyAccessRow"), value: (l) => l.earlyAccess },
-    { name: t("configuracoes.subscription.themesRow"), value: () => true },
-  ];
+  const rows = comparisonRows(t);
 
   const cell = (value: Cell, highlight: boolean) =>
     value === true ? (

@@ -286,9 +286,19 @@ export const Chat: React.FC = () => {
         </Sheet>
       )}
 
-      <div data-gc="chat.chat.div--2" {...flx("coreColumn", "topo-do-miolo flex min-w-0 flex-1 flex-col")}>
+      {/*
+        A linha de cima é UMA só, e é do cabeçalho.
+
+        Antes ela vinha do `topo-do-miolo` desta coluna. Medindo o print, a
+        linha sobre a conversa saía em `#3e3e3f` enquanto a da lista de canais,
+        na mesma altura da mesma captura, saía em `#2b2b2c` — o dobro da força,
+        que é o que acontece quando dois fios de 1px caem um sobre o outro.
+        Com a borda no cabeçalho, existe um fio só por construção. Sem
+        cabeçalho não há o que segurar a linha, e aí a coluna volta a desenhar.
+      */}
+      <div data-gc="chat.chat.div--2" {...flx("coreColumn", cn("flex min-w-0 flex-1 flex-col", withoutHeader && "topo-do-miolo"))}>
         {!withoutHeader && (
-        <header data-gc="chat.chat.header--2" {...flx("channelTop", "topo-do-canal regiao-de-arrasto mede-a-largura h-[var(--layout-header-height)] shrink-0 border-b border-divisor bg-cabecalho shadow-sm")}>
+        <header data-gc="chat.chat.header--2" {...flx("channelTop", "topo-do-canal regiao-de-arrasto mede-a-largura h-[var(--layout-header-height)] shrink-0 border-y border-divisor bg-cabecalho shadow-sm")}>
           <div data-gc="chat.chat.div--3"
             {...flx("topChannelCore", "flex h-full w-full items-center gap-2 px-4")}
           >

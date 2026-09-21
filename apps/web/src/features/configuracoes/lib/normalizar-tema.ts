@@ -35,6 +35,7 @@ export function countPickersDated(css: string): {
 export const THEME_CLASS: Record<string, string> = {
   dark: "theme-dark",
   "mais-escuro": "theme-coal",
+  grafite: "theme-dark",
   light: "theme-light",
   gravae: "theme-dark",
 };

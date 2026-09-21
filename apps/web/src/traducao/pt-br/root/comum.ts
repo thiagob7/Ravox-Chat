@@ -111,4 +111,10 @@ export const comum = {
     legenda: "Um robô acenando",
     legendaFalhou: "Um gatinho chorando",
   },
+  ads: {
+    label: "Publicidade",
+    title: "Anuncie aqui",
+    detail: "Fale com a gente e apareça para quem usa o Ravox Chat.",
+    action: "Quero anunciar",
+  },
 };

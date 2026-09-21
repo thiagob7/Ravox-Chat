@@ -110,4 +110,10 @@ export const comum = {
     legenda: "手を振るロボット",
     legendaFalhou: "泣いている子猫",
   },
+  ads: {
+    label: "広告",
+    title: "ここに広告を",
+    detail: "ご連絡ください。Ravox Chat を使う人たちに届きます。",
+    action: "広告を出したい",
+  },
 };

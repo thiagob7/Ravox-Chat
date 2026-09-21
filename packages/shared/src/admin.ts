@@ -9,6 +9,7 @@ export const ADMIN_AREAS = [
   "comunidades",
   "administradores",
   "premium",
+  "ads",
 ] as const;
 
 export type AdminArea = (typeof ADMIN_AREAS)[number];

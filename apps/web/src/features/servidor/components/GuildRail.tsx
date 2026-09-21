@@ -231,10 +231,10 @@ export const GuildRail: React.FC<GuildRailProps> = ({
           )
         )}
 
-        <RailAction data-gc="servidor.guild-rail.rail-action.open-upgrade"
+        <RailAction data-gc="servidor.guild-rail.rail-action--4"
           label={PLAN_NAME}
           active={upgradeOpen}
-          onClick={openUpgrade}
+          onClick={() => openUpgrade()}
         >
           <InfinityIcon data-gc="servidor.guild-rail.infinity-icon" size={22} />
         </RailAction>
