@@ -1,9 +1,9 @@
 {
   "name": "@gravae/desktop",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "private": true,
   "description": "Aplicativo de desktop do Ravox Chat",
-  "productName": "Gravaê Chat",
+  "productName": "Ravox Chat",
   "main": "dist/main.cjs",
   "scripts": {
     "dev": "tsup && dotenv -e ../../.env -- electron .",

@@ -6,8 +6,8 @@ export interface Published {
 
 const REPO = "thiagob7/Ravox-Chat";
 
-export const LINK_MAC = `https://github.com/${REPO}/releases/latest/download/gravae-chat-mac.dmg`;
-export const LINK_WINDOWS = `https://github.com/${REPO}/releases/latest/download/gravae-chat-win.exe`;
+export const LINK_MAC = `https://github.com/${REPO}/releases/latest/download/ravox-chat-mac.dmg`;
+export const LINK_WINDOWS = `https://github.com/${REPO}/releases/latest/download/ravox-chat-win.exe`;
 export const LINK_RELEASES = `https://github.com/${REPO}/releases`;
 
 export async function searchLastVersion(): Promise<Published> {

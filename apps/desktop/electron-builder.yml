@@ -10,12 +10,10 @@ appId: io.gravae.chat
 
 # ⚠️ SEM ACENTO AQUI, de propósito. O `productName` batiza o executável e os
 # quatro processos auxiliares ("… Helper.app", "… Helper (GPU).app", …). Com
-# "Gravaê" no nome, o app empacotado MORRE em SIGTRAP no processo principal,
+# acento no nome, o app empacotado MORRE em SIGTRAP no processo principal,
 # antes do `app.whenReady()` — sem janela, sem uma linha de erro. O mesmo
-# bundle com nome ASCII abre normalmente; foi o único ajuste entre os dois
-# empacotamentos. O acento volta logo abaixo, em `CFBundleDisplayName`, que é
-# o que o Finder, o Dock e o menu mostram.
-productName: Gravae Chat
+# bundle com nome ASCII abre normalmente.
+productName: Ravox Chat
 copyright: Ravox Chat
 
 # O uiohook-napi é N-API e já vem com o `.node` pronto pra cada plataforma
@@ -29,10 +27,13 @@ npmRebuild: false
 # `codesign --deep` feito à mão sai na ordem errada.
 
 # Nome fixo, sem a versão: é o que permite um link permanente do tipo
-# `releases/latest/download/gravae-chat-mac.dmg` no botão de baixar. Com a
+# `releases/latest/download/ravox-chat-mac.dmg` no botão de baixar. Com a
 # versão no nome, o link teria que ser trocado a cada release — e alguém ia
 # esquecer. A versão continua visível na página da release.
-artifactName: gravae-chat-${os}.${ext}
+artifactName: ravox-chat-${os}.${ext}
+# Os `gravae-chat-*` que também vão para a release saem do workflow, não daqui:
+# são a ponte para o atualizador da v0.2.5 e anteriores, que só procura esses
+# nomes (ver .github/workflows/desktop.yml).
 
 directories:
   output: release
@@ -76,7 +77,6 @@ mac:
   # Sem estes textos o macOS NEGA o pedido sem mostrar nada — a permissão nem
   # chega a ser perguntada.
   extendInfo:
-    # O nome bonito, com acento, vive só aqui — nunca em caminho de arquivo.
     CFBundleDisplayName: Ravox Chat
     NSMicrophoneUsageDescription: O Ravox Chat usa o microfone nas chamadas de voz.
     NSCameraUsageDescription: O Ravox Chat usa a câmera quando você liga o vídeo na chamada.

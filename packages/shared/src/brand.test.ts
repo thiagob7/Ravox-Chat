@@ -13,9 +13,9 @@ const LEGACY = /Grava[êe] Chat|Gravaê|GRAVAÊ/;
 const ALLOWED: Record<string, string> = {
   "packages/shared/src/brand.test.ts": "esta própria trava, que precisa do nome antigo para procurá-lo",
   "apps/api/src/services/legacy-brand.ts": "os nomes antigos que a migração da casa procura para renomear",
-  "apps/desktop/package.json": "o productName batiza a pasta de dados; trocar esvazia o cache de quem já usa",
-  "apps/desktop/src/main/atualizacao-mac.ts": "o pacote instalado se chama Gravae Chat.app, e o atualizador que já está nas máquinas procura esse nome",
-  "apps/desktop/electron-builder.yml": "o comentário que explica por que acento no nome derruba o app no Mac",
+  "apps/desktop/src/main/legacy-data.ts": "a pasta de dados antiga, que o app adota para ninguém perder o login",
+  "apps/desktop/src/main/legacy-data.test.ts": "o teste da adoção da pasta de dados antiga",
+  ".github/workflows/desktop.yml": "a ponte para o atualizador da v0.2.5, que só procura o Gravae Chat.app",
 };
 
 const SCANNED = ["apps", "packages", "exemplos", "infra", ".github", "README.md"];
