@@ -41,7 +41,7 @@ export const AppColorsPanel: React.FC = () => {
         <p data-gc="tema.cores-do-app.p" className="min-w-0 flex-1 text-sm text-ink-muted">
           {t("configuracoes.appColors.locked", { plan: PLAN_NAME })}
         </p>
-        <Button data-gc="tema.cores-do-app.button.open-upgrade" size="sm" onClick={openUpgrade}>
+        <Button data-gc="tema.cores-do-app.button" size="sm" onClick={() => openUpgrade()}>
           {t("configuracoes.subscription.seePlans")}
         </Button>
       </div>
@@ -56,7 +56,7 @@ export const AppColorsPanel: React.FC = () => {
         {colors.map((color, index) => (
           <Popover data-gc="tema.cores-do-app.popover" key={`${color}-${index}`}>
             <PopoverTrigger data-gc="tema.cores-do-app.popover-trigger" asChild>
-              <button data-gc="tema.cores-do-app.button"
+              <button data-gc="tema.cores-do-app.button--2"
                 type="button"
                 aria-label={t("configuracoes.appColors.color", { number: index + 1 })}
                 className="size-9 rounded-lg border border-line-sutil"
@@ -65,7 +65,7 @@ export const AppColorsPanel: React.FC = () => {
             </PopoverTrigger>
             <PopoverContent data-gc="tema.cores-do-app.popover-content" className="w-64">
               <ColorField data-gc="tema.cores-do-app.color-field" value={color} onChange={(value) => swap(index, value)} />
-              <Button data-gc="tema.cores-do-app.button--2"
+              <Button data-gc="tema.cores-do-app.button--3"
                 variant="ghost"
                 size="sm"
                 className="mt-2 w-full"
@@ -78,12 +78,12 @@ export const AppColorsPanel: React.FC = () => {
         ))}
 
         {colors.length < MAX_COLORS && (
-          <Button data-gc="tema.cores-do-app.button--3" variant="surface" size="sm" onClick={() => change({ colors: [...colors, randomColor()] })}>
+          <Button data-gc="tema.cores-do-app.button--4" variant="surface" size="sm" onClick={() => change({ colors: [...colors, randomColor()] })}>
             <Plus data-gc="tema.cores-do-app.plus" size={14} /> {t("configuracoes.appColors.addColor")}
           </Button>
         )}
 
-        <Button data-gc="tema.cores-do-app.button--4"
+        <Button data-gc="tema.cores-do-app.button--5"
           variant="ghost"
           size="sm"
           className="ml-auto"

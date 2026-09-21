@@ -1,16 +1,17 @@
 import { create } from "zustand";
-import { limitsOf, type PlanLimits } from "@gravae/shared";
+import { limitsOf, type BillingInterval, type PlanLimits } from "@gravae/shared";
 
 type PlanStore = {
   premiumUntil: string | null;
   awaitingPaymentSince: number | null;
   upgradeOpen: boolean;
+  upgradeInterval: BillingInterval | null;
   guildProfileFor: string | null;
   giftCode: string | null;
   claimingGift: string | null;
   setPremiumUntil: (premiumUntil: string | null) => void;
   awaitPayment: () => void;
-  openUpgrade: () => void;
+  openUpgrade: (interval?: BillingInterval) => void;
   closeUpgrade: () => void;
   openGuildProfile: (guildId: string) => void;
   closeGuildProfile: () => void;
@@ -24,7 +25,8 @@ export const usePlanStore = create<PlanStore>((set) => ({
   setPremiumUntil: (premiumUntil) => set({ premiumUntil }),
   awaitPayment: () => set({ awaitingPaymentSince: Date.now() }),
   upgradeOpen: false,
-  openUpgrade: () => set({ upgradeOpen: true }),
+  upgradeInterval: null,
+  openUpgrade: (interval) => set({ upgradeOpen: true, upgradeInterval: interval ?? null }),
   closeUpgrade: () => set({ upgradeOpen: false }),
   guildProfileFor: null,
   openGuildProfile: (guildId) => set({ guildProfileFor: guildId }),

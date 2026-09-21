@@ -85,9 +85,9 @@ const GuildProfileBody: React.FC<{ guildId: string; onDone: () => void }> = ({ g
 
       <DialogBody data-gc="plan.guild-profile-modal.dialog-body" className="space-y-5">
         {!allowed && (
-          <button data-gc="plan.guild-profile-modal.button.open-upgrade"
+          <button data-gc="plan.guild-profile-modal.button"
             type="button"
-            onClick={openUpgrade}
+            onClick={() => openUpgrade()}
             className="flex w-full items-center gap-2 rounded-lg border border-brand/40 bg-brand/10 px-3 py-2.5 text-left text-sm text-ink"
           >
             <InfinityIcon data-gc="plan.guild-profile-modal.infinity-icon" size={16} className="shrink-0 text-brand" />
@@ -128,7 +128,7 @@ const GuildProfileBody: React.FC<{ guildId: string; onDone: () => void }> = ({ g
                 void choose(field, file);
               }}
             />
-            <Button data-gc="plan.guild-profile-modal.button"
+            <Button data-gc="plan.guild-profile-modal.button--2"
               variant="surface"
               size="sm"
               disabled={!allowed}
@@ -139,7 +139,7 @@ const GuildProfileBody: React.FC<{ guildId: string; onDone: () => void }> = ({ g
               {t(field === "avatarUrl" ? "servidor.perfilNoServidor.trocarFoto" : "servidor.perfilNoServidor.trocarFaixa")}
             </Button>
             {value(field) && (
-              <Button data-gc="plan.guild-profile-modal.button--2" variant="ghost" size="sm" onClick={() => setDraft((d) => ({ ...d, [field]: null }))}>
+              <Button data-gc="plan.guild-profile-modal.button--3" variant="ghost" size="sm" onClick={() => setDraft((d) => ({ ...d, [field]: null }))}>
                 <Trash2 data-gc="plan.guild-profile-modal.trash2" size={14} /> {t("servidor.perfilNoServidor.usarDaConta")}
               </Button>
             )}
@@ -164,7 +164,7 @@ const GuildProfileBody: React.FC<{ guildId: string; onDone: () => void }> = ({ g
         <Button data-gc="plan.guild-profile-modal.button.on-done" variant="ghost" onClick={onDone}>
           {t("comum.cancelar")}
         </Button>
-        <Button data-gc="plan.guild-profile-modal.button--3" disabled={!Object.keys(draft).length} loading={save.isPending} onClick={() => save.mutate()}>
+        <Button data-gc="plan.guild-profile-modal.button--4" disabled={!Object.keys(draft).length} loading={save.isPending} onClick={() => save.mutate()}>
           {t("comum.salvar")}
         </Button>
       </DialogFooter>

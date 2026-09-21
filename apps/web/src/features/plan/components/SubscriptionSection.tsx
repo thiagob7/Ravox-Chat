@@ -93,7 +93,7 @@ export const SubscriptionSection: React.FC = () => {
       <ComparisonTable data-gc="plan.subscription-section.comparison-table" className="mt-8" />
 
       {!subscription && !premium && (
-        <Button data-gc="plan.subscription-section.button.open-upgrade" className="mt-8" onClick={openUpgrade}>
+        <Button data-gc="plan.subscription-section.button--2" className="mt-8" onClick={() => openUpgrade()}>
           <InfinityIcon data-gc="plan.subscription-section.infinity-icon--2" size={16} /> {t("configuracoes.subscription.seePlans")}
         </Button>
       )}
@@ -110,7 +110,7 @@ export const SubscriptionSection: React.FC = () => {
               date: date(status.refund.openUntil),
             })}
           </p>
-          <Button data-gc="plan.subscription-section.button--2" className="mt-3" variant="danger" loading={refund.isPending} onClick={() => void askRefund()}>
+          <Button data-gc="plan.subscription-section.button--3" className="mt-3" variant="danger" loading={refund.isPending} onClick={() => void askRefund()}>
             {t("configuracoes.subscription.refund")}
           </Button>
         </ConfigSection>
