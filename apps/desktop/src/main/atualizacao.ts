@@ -13,7 +13,7 @@ import { isDev } from "./config.js";
 import { isMoreNew } from "./versao.js";
 
 const REPO = "thiagob7/Ravox-Chat";
-const FILE = process.platform === "darwin" ? "gravae-chat-mac.dmg" : "gravae-chat-win.exe";
+const FILE = process.platform === "darwin" ? "ravox-chat-mac.dmg" : "ravox-chat-win.exe";
 
 const INTERVAL_MS = 6 * 60 * 60 * 1000;
 
@@ -116,7 +116,7 @@ export function createUpdater(onChange: (state: UpdateState) => void) {
     working = true;
     change({ phase: "baixando", progress: 0, error: null });
 
-    const folder = await mkdtemp(path.join(tmpdir(), "gravae-atualizacao-"));
+    const folder = await mkdtemp(path.join(tmpdir(), "ravox-atualizacao-"));
 
     try {
       const published = await lastPublished();
