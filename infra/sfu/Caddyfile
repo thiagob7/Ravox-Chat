@@ -3,7 +3,7 @@
 # Producao. O infra/livekit/livekit.yaml ao lado deste diretorio e o de
 # DESENVOLVIMENTO — nao confunda os dois.
 
-gravaechat-sfu.duckdns.org {
+ravoxchat-sfu.duckdns.org, gravaechat-sfu.duckdns.org {
 	# --- metricas da maquina, so pra API ------------------------------------
 	#
 	# Passa por aqui em vez de ter porta propria porque uma porta nova exigiria

@@ -52,6 +52,8 @@ aqui → só depois `master` e o `deploy-api.sh` de produção.
 ## Falta fora daqui
 
 - **O subdomínio** `ravoxchat-api-staging.duckdns.org`, apontando para o mesmo
-  IP. É criado na conta do DuckDNS. O antigo, `gravaechat-api-staging`, continua
-  respondendo no mesmo bloco do Caddy até ninguém mais usar.
+  IP. É criado na conta do DuckDNS, que tem teto de 5 subdomínios. O antigo,
+  `gravaechat-api-staging`, foi apagado em 22/09/2026. O `gravaechat-api` responde
+  num bloco próprio do Caddy, com log em `/var/log/caddy/gravaechat-api.log`, para
+  ver quem ainda usa o nome antigo antes de apagá-lo.
 - **O endereço do front** de staging na Vercel, que vai no `WEB_ORIGIN`.

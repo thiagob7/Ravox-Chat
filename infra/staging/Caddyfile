@@ -1,7 +1,15 @@
-ravoxchat-api.duckdns.org, gravaechat-api.duckdns.org {
+ravoxchat-api.duckdns.org {
 	reverse_proxy localhost:3333
 }
 
-ravoxchat-api-staging.duckdns.org, gravaechat-api-staging.duckdns.org {
+gravaechat-api.duckdns.org {
+	log {
+		output file /var/log/caddy/gravaechat-api.log
+		format json
+	}
+	reverse_proxy localhost:3333
+}
+
+ravoxchat-api-staging.duckdns.org {
 	reverse_proxy localhost:3334
 }

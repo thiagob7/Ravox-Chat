@@ -75,5 +75,5 @@ $SSH "$HOST" "curl -sS --max-time 5 -H 'Authorization: Bearer $TOKEN' http://127
 echo
 echo "pronto. Ponha estas duas linhas no .env da API (raiz do repo) e rode o deploy-api.sh:"
 echo
-echo "SFU_STATUS_URL=https://gravaechat-sfu.duckdns.org/interno/maquina"
+echo "SFU_STATUS_URL=https://ravoxchat-sfu.duckdns.org/interno/maquina"
 echo "SFU_STATUS_TOKEN=$TOKEN"
