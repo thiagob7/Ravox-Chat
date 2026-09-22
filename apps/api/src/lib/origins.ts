@@ -27,7 +27,7 @@ function isVercelPreview(origin: string): boolean {
     if (!/^[a-z0-9-]+$/.test(scope)) return false;
 
     const { protocol, hostname } = new URL(origin);
-    const preview = new RegExp(`^(?:gravae-chat|app-ravox-chat)-[a-z0-9-]+-${scope}\\.vercel\\.app$`);
+    const preview = new RegExp(`^(?:app-)?ravox-chat-[a-z0-9-]+-${scope}\\.vercel\\.app$`);
     return protocol === "https:" && preview.test(hostname);
   } catch {
     return false;
