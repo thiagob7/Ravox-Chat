@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const env = {
-  WEB_ORIGIN: "https://gravae-chat.vercel.app",
+  WEB_ORIGIN: "https://app-ravox-chat.vercel.app",
   ACCEPT_PREVIEWS_VERCEL: false,
   VERCEL_PREVIEW_SCOPE: "thiago",
 };
@@ -17,7 +17,7 @@ beforeEach(() => {
 
 describe("origens aceitas", () => {
   it("aceita a que está configurada", () => {
-    expect(originAllowed("https://gravae-chat.vercel.app")).toBe(true);
+    expect(originAllowed("https://app-ravox-chat.vercel.app")).toBe(true);
   });
 
   it("recusa uma qualquer", () => {
@@ -31,15 +31,15 @@ describe("origens aceitas", () => {
 
 describe("prévias da Vercel", () => {
   it("desligado, a prévia é recusada como qualquer outra", () => {
-    expect(originAllowed("https://gravae-chat-abc123-thiago.vercel.app")).toBe(false);
+    expect(originAllowed("https://ravox-chat-abc123-thiago.vercel.app")).toBe(false);
   });
 
   it("ligado, as prévias do projeto neste time entram", () => {
     env.ACCEPT_PREVIEWS_VERCEL = true;
 
     for (const o of [
-      "https://gravae-chat-abc123-thiago.vercel.app",
-      "https://gravae-chat-git-staging-thiago.vercel.app",
+      "https://ravox-chat-r5t85inxa-thiago.vercel.app",
+      "https://ravox-chat-git-staging-thiago.vercel.app",
       "https://app-ravox-chat-abc123-thiago.vercel.app",
       "https://app-ravox-chat-git-staging-thiago.vercel.app",
     ]) {
@@ -51,13 +51,13 @@ describe("prévias da Vercel", () => {
     env.ACCEPT_PREVIEWS_VERCEL = true;
 
     for (const o of [
-      "http://gravae-chat.vercel.app",
+      "http://app-ravox-chat.vercel.app",
       "https://vercel.app.site-de-outro.com",
       "https://naovercel.app.br",
       "https://atacante.vercel.app",
-      "https://gravae-chat-abc123-outro-time.vercel.app",
+      "https://ravox-chat-abc123-outro-time.vercel.app",
+      "https://gravae-chat-abc123-thiago.vercel.app",
       "https://outro-projeto-abc123-thiago.vercel.app",
-      "https://ravox-chat-abc123-thiago.vercel.app",
     ]) {
       expect({ o, ok: originAllowed(o) }).toEqual({ o, ok: false });
     }
@@ -69,6 +69,6 @@ describe("prévias sem time configurado", () => {
     env.ACCEPT_PREVIEWS_VERCEL = true;
     env.VERCEL_PREVIEW_SCOPE = "";
 
-    expect(originAllowed("https://gravae-chat-abc123-thiago.vercel.app")).toBe(false);
+    expect(originAllowed("https://ravox-chat-abc123-thiago.vercel.app")).toBe(false);
   });
 });

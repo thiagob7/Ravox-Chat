@@ -1,6 +1,6 @@
 [Unit]
 Description=Metricas da maquina do SFU (socket)
-Documentation=https://github.com/gravae/gravae-chat/blob/master/infra/sfu/LEIAME.md
+Documentation=https://github.com/thiagob7/Ravox-Chat/blob/master/infra/sfu/LEIAME.md
 
 [Socket]
 # 127.0.0.1 de proposito: nem a sub-rede alcanca isto direto. Quem expoe e o
